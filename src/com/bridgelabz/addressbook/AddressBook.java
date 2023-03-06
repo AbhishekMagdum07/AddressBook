@@ -61,10 +61,34 @@ public class AddressBook {
          }
     }
 
+    public static void edit(){
+        System.out.println("Choose Element to edit and press number accordingly");
+        System.out.println("0.firstName ,1.lastName, 2.address, 3.city, 4.state, 5.zip, 6.phoneNo, 7.email");
+        int choice = sc.nextInt();
 
+        switch (choice){
+            case 0 : contats.set(0,sc.next());break;
+            case 1 : contats.set(1,sc.next());break;
+            case 2 : contats.set(2,sc.next());break;
+            case 3 : contats.set(3,sc.next());break;
+            case 4 : contats.set(4,sc.next());break;
+            case 5 : contats.set(5,sc.next());break;
+            case 6 : contats.set(6,sc.next());break;
+            case 7 : contats.set(7,sc.next());break;
+            default:
+                System.out.println("You made wrong choice");
+        }
+
+        System.out.println("Contats added Successfully");
+        for(String run : contats) {
+            System.out.println(run);
+        }
+
+    }
     public static void main(String[] args) {
         create();
         add();
+        edit();
 
 
     }
