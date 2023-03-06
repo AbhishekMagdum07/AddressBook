@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AddressBook {
+    public static ArrayList<String> contats = new ArrayList<>();
     static Scanner sc = new Scanner(System.in);
     static String firstName,lastName,address,city,state,email,zip,phoneNo;
 
@@ -43,7 +44,28 @@ public class AddressBook {
         AddressBook employee = new AddressBook(firstName, lastName, address, city, state, zip, phoneNo, email);
         System.out.println(employee.toString());
     }
+
+    public static void add(){
+        contats.add(firstName);
+        contats.add(lastName);
+        contats.add(address);
+        contats.add(city);
+        contats.add(state);
+        contats.add(zip);
+        contats.add(phoneNo);
+        contats.add(email);
+
+        System.out.println("Contats added Successfully");
+        for(String run : contats) {
+           System.out.println(run);
+         }
+    }
+
+
     public static void main(String[] args) {
         create();
+        add();
+
+
     }
 }
