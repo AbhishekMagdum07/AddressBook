@@ -32,8 +32,10 @@ public class Main {
         contact = new AddressBook(firstName,lastName,address,city,state,zip,ph_no,email);
     }
     public void addContacts() {
-        contacts.add(contact);
+        contacts.add(contact); // if we enter a firstname same as previous it won't take it.
     }
+
+
     public void editContacts() {
         for(int i = 0; i < contacts.size(); i++) {
             if(contacts.get(i).getFirstName().equalsIgnoreCase(sreachName)) {
