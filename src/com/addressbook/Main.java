@@ -1,13 +1,16 @@
 package com.addressbook;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-public class Main {
+public class Main{
     static Main addressBook = new Main();
     Scanner sc = new Scanner(System.in);
     static int option;
     static AddressBook contact;
     static ArrayList <AddressBook> contacts = new ArrayList<AddressBook>();
+    static List<AddressBook> duplicate;
     String sreachName;
     public void createContacts() {
         Scanner sc = new Scanner(System.in);
@@ -31,8 +34,17 @@ public class Main {
         System.out.println("Contact created");
         contact = new AddressBook(firstName,lastName,address,city,state,zip,ph_no,email);
     }
-    public void addContacts() {
-        contacts.add(contact); // if we enter a firstname same as previous it won't take it.
+    public void addContacts () {
+        if (contacts.isEmpty()) {
+            contacts.add(contact);
+        } else {                                // using stream for find duplicate contacts.
+            duplicate = contacts.stream().filter(a -> a.getFirstName().equals(a.getFirstName())).collect(Collectors.toList());
+            if (contacts.equals(duplicate)) {
+                System.out.println("This contact is already present in addressbook");
+            } else {
+                contacts.add(contact);
+            }
+        }
     }
 
 
@@ -123,6 +135,7 @@ public class Main {
                 System.out.println("Invalid option");
         }
     }
+
     public static void main(String[] args) {
         addressBook.choices();
     }
