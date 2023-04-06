@@ -13,6 +13,7 @@ public class Main{
     static List<AddressBook> duplicate;
     static List<AddressBook> searchByCity;
     static List<AddressBook> searchByState;
+    static List<AddressBook> contactDetails;
 
     String sreachName;
     public void createContacts() {
@@ -113,6 +114,11 @@ public class Main{
         searchByState = contacts.stream().filter(x -> x.getState().equalsIgnoreCase(state)).collect(Collectors.toList());
         searchByState.forEach(x -> System.out.println(x));
     }
+    public void contactNo(String city) {   // get contact on basis of city name
+        contactDetails = contacts.stream().filter(x -> x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
+        System.out.println(contact.getPhoneNumber());
+
+    }
     public void choices() {
         System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search  6.Exit");
         option = sc.nextInt();
@@ -155,7 +161,10 @@ public class Main{
                 }
                 choices();
                 break;
-            case 6:
+            case  6:
+                System.out.println("Enter the city name");
+                contactNo(sc.next());
+            case 7:
                 System.exit(0);break;
             default:
                 System.out.println("Invalid option");
