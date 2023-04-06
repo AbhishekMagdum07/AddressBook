@@ -11,6 +11,9 @@ public class Main{
     static AddressBook contact;
     static ArrayList <AddressBook> contacts = new ArrayList<AddressBook>();
     static List<AddressBook> duplicate;
+    static List<AddressBook> searchByCity;
+    static List<AddressBook> searchByState;
+
     String sreachName;
     public void createContacts() {
         Scanner sc = new Scanner(System.in);
@@ -102,8 +105,16 @@ public class Main{
             }
         }
     }
+    public void searchByCity(String city) {   // search contact on basis of city name.
+        searchByCity = contacts.stream().filter(x -> x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
+        searchByCity.forEach(x -> System.out.println(x));
+    }
+    public void searchByState(String state) { // search contact on basis of state.
+        searchByState = contacts.stream().filter(x -> x.getState().equalsIgnoreCase(state)).collect(Collectors.toList());
+        searchByState.forEach(x -> System.out.println(x));
+    }
     public void choices() {
-        System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.Exit");
+        System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search  6.Exit");
         option = sc.nextInt();
         switch(option) {
             case 1:
@@ -130,6 +141,21 @@ public class Main{
                     }
                 }break;
             case 5:
+                System.out.println("1. Search by city 2. Search by state");
+                int option2 = sc.nextInt();
+                if(option2 == 1) {
+                    System.out.println("Enter the city name to search");
+                    String citySearch = sc.next();
+                    addressBook.searchByCity(citySearch);
+                }
+                else if(option2 == 2) {
+                    System.out.println("Enter the state name to search");
+                    String stateSearch = sc.next();
+                    addressBook.searchByState(stateSearch);
+                }
+                choices();
+                break;
+            case 6:
                 System.exit(0);break;
             default:
                 System.out.println("Invalid option");
