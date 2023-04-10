@@ -1,4 +1,8 @@
 package com.addressbook;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -131,8 +135,22 @@ public class Main{
         List<AddressBook> sorting = contacts.stream().sorted(Comparator.comparing(AddressBook::getState)).collect(Collectors.toList());
         System.out.println(sorting);
     }
+    public void readFile(){ // Reading contacts using File handling.
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\windows\\Desktop\\Addressbook.txt"));
+            String line;
+            while ((line = reader.readLine()) != null){
+                System.out.println(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     public void choices() {
-        System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search 6.Contact by city  7.sort by name 8.sort by state 9.Exit ");
+        System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search" +
+                                " 6.Contact by city  7.sort by name 8.sort by state 9.Read file 10.Exit ");
         option = sc.nextInt();
         switch(option) {
             case 1:
@@ -150,7 +168,7 @@ public class Main{
                 output.deleteContact();
                 output.choices();break;
             case 4:
-//
+
                 System.out.println("Enter addressbook name");
                 String input = sc.next();
                 System.out.println(multipleAdd.get(input));
@@ -176,15 +194,18 @@ public class Main{
                 contactNo(sc.next());
                 choices();
             case 7:
-                sortByName();
+               output.sortByName();
                 choices();
                 break;
             case 8:
-                sortByState();
+                output.sortByState();
                 choices();
                 break;
-
             case 9:
+               output.readFile();
+               choices();
+
+            case 10:
                 System.exit(0);break;
             default:
                 System.out.println("Invalid option");
