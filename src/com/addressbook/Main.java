@@ -1,20 +1,15 @@
 package com.addressbook;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main{
-    static Main addressBook = new Main();
+    static String name;
+    static Main output = new Main(name);
     Scanner sc = new Scanner(System.in);
     static int option;
     static AddressBook contact;
-    static ArrayList <AddressBook> contacts = new ArrayList<AddressBook>();
-    static List<AddressBook> duplicate;
-    static List<AddressBook> searchByCity;
-    static List<AddressBook> searchByState;
-    static List<AddressBook> contactDetails;
-
+    static ArrayList <AddressBook> contacts = new ArrayList<>();
+    HashMap<String, ArrayList<AddressBook>> multipleAdd;
     String sreachName;
     public void createContacts() {
         Scanner sc = new Scanner(System.in);
@@ -36,21 +31,31 @@ public class Main{
         System.out.println("Enter the email address");
         String email = sc.next();
         System.out.println("Contact created");
-        contact = new AddressBook(firstName,lastName,address,city,state,zip,ph_no,email);
-    }
-    public void addContacts () {
-        if (contacts.isEmpty()) {
-            contacts.add(contact);
-        } else {                                // using stream for find duplicate contacts.
-            duplicate = contacts.stream().filter(a -> a.getFirstName().equals(a.getFirstName())).collect(Collectors.toList());
-            if (contacts.equals(duplicate)) {
-                System.out.println("This contact is already present in addressbook");
-            } else {
-                contacts.add(contact);
-            }
-        }
+         contact = new AddressBook(firstName,lastName,address,city,state,zip,ph_no,email);
+
     }
 
+    public Main(String name) {
+        this.name = name;
+        this.multipleAdd = new HashMap<String, ArrayList<AddressBook>>();
+    }
+
+    public void addContacts () {
+        System.out.println("name of addressbook");
+        String name = sc.next();
+//        if (contacts.isEmpty()) {
+        contacts.add(contact);
+        this.multipleAdd.put(name, contacts);
+//        } else {
+    }
+    public void duplicateContacts() {  // using stream for find duplicate contacts.
+        List<AddressBook> duplicate = contacts.stream().filter(a -> a.getFirstName().equals(a.getFirstName())).collect(Collectors.toList());
+        if (contacts.equals(duplicate)) {
+            System.out.println("This contact is already present in addressbook");
+        } else {
+            contacts.add(contact);
+        }
+    }
 
     public void editContacts() {
         for(int i = 0; i < contacts.size(); i++) {
@@ -107,64 +112,79 @@ public class Main{
         }
     }
     public void searchByCity(String city) {   // search contact on basis of city name.
-        searchByCity = contacts.stream().filter(x -> x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
-        searchByCity.forEach(x -> System.out.println(x));
+         List<AddressBook> searchByCity = contacts.stream().filter(x -> x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
+         searchByCity.forEach(x -> System.out.println(x));
     }
     public void searchByState(String state) { // search contact on basis of state.
-        searchByState = contacts.stream().filter(x -> x.getState().equalsIgnoreCase(state)).collect(Collectors.toList());
+        List<AddressBook> searchByState = contacts.stream().filter(x -> x.getState().equalsIgnoreCase(state)).collect(Collectors.toList());
         searchByState.forEach(x -> System.out.println(x));
     }
     public void contactNo(String city) {   // get contact on basis of city name
-        contactDetails = contacts.stream().filter(x -> x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
+        List<AddressBook>  contactDetails = contacts.stream().filter(x -> x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
         System.out.println(contact.getPhoneNumber());
-
+    }
+    public void sortByName() { // sorting contacts on basis of name.
+       List<AddressBook> sorting = contacts.stream().sorted(Comparator.comparing(AddressBook::getFirstName)).collect(Collectors.toList());
+        System.out.println(sorting);
+    }
+    public void sortByState(){ // sorting contacts on basis of state name.
+        List<AddressBook> sorting = contacts.stream().sorted(Comparator.comparing(AddressBook::getState)).collect(Collectors.toList());
+        System.out.println(sorting);
     }
     public void choices() {
-        System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search  6.Exit");
+        System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search 6.Contact by city  7.sort by name 8.sort by state 9.Exit ");
         option = sc.nextInt();
         switch(option) {
             case 1:
-                addressBook.createContacts();
-                addressBook.addContacts();
-                addressBook.choices();break;
+                output.createContacts();
+                output.addContacts();
+                output.choices();break;
             case 2:
-                System.out.println("Enter the first name to search and edit contact with first name");
+                System.out.println("Enter the first name to search contact");
                 sreachName = sc.next();
-                addressBook.editContacts();
-                addressBook.choices();break;
+                output.editContacts();
+                output.choices();break;
             case 3:
-                System.out.println("Enter the first name to search and edit contact with first name");
+                System.out.println("Enter the first name  delete contact ");
                 sreachName = sc.next();
-                addressBook.deleteContact();
-                addressBook.choices();break;
+                output.deleteContact();
+                output.choices();break;
             case 4:
-                System.out.println("Enter the contact's first name to display");
-                sreachName = sc.next();
-                for(int i = 0; i < contacts.size(); i++) {
-                    if(contacts.get(i).getFirstName().equalsIgnoreCase(sreachName)) {
-                        System.out.println(contacts.get(i));
-                        addressBook.choices();
-                    }
-                }break;
+//
+                System.out.println("Enter addressbook name");
+                String input = sc.next();
+                System.out.println(multipleAdd.get(input));
+                choices();
+                break;
             case 5:
                 System.out.println("1. Search by city 2. Search by state");
                 int option2 = sc.nextInt();
                 if(option2 == 1) {
                     System.out.println("Enter the city name to search");
                     String citySearch = sc.next();
-                    addressBook.searchByCity(citySearch);
+                    output.searchByCity(citySearch);
                 }
                 else if(option2 == 2) {
                     System.out.println("Enter the state name to search");
                     String stateSearch = sc.next();
-                    addressBook.searchByState(stateSearch);
+                    output.searchByState(stateSearch);
                 }
                 choices();
                 break;
             case  6:
                 System.out.println("Enter the city name");
                 contactNo(sc.next());
+                choices();
             case 7:
+                sortByName();
+                choices();
+                break;
+            case 8:
+                sortByState();
+                choices();
+                break;
+
+            case 9:
                 System.exit(0);break;
             default:
                 System.out.println("Invalid option");
@@ -172,6 +192,6 @@ public class Main{
     }
 
     public static void main(String[] args) {
-        addressBook.choices();
+        output.choices();
     }
 }
