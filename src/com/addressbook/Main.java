@@ -154,9 +154,37 @@ public class Main{
             e.printStackTrace();
         }
     }
+    public void writeCsvFile() { // Uc14- Ability to write contacts in CSV file.
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("E:\\AddressBook.csv"));
+            writer.write(String.valueOf(contacts));
+            writer.close();
+            File file = new File("E:\\AddressBook.csv");
+            if (file.exists()) {
+                System.out.println("File Created Successfully");
+            } else {
+                System.out.println("File is not created.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void readCsvFile(){ // Reading contacts using CSV File handling.
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("E:\\AddressBook.csv"));
+            String line;
+            while ((line = reader.readLine()) != null){
+                System.out.println(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void choices() {
         System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search" +
-                                " 6.Contact by city  7.sort by name 8.sort by state 9.Write File 10.Read file 10.Exit ");
+                                " 6.Contact by city  7.sort by name 8.sort by state 9.Write File 10.Read file 11.Write CSV File 12.Read CSV File 13.Exit ");
         option = sc.nextInt();
         switch(option) {
             case 1:
@@ -213,8 +241,14 @@ public class Main{
             case 10:
                output.readFile();
                choices();
-
             case 11:
+                output.writeCsvFile();
+                choices();
+            case 12:
+                output.readCsvFile();
+                choices();
+
+            case 13:
                 System.exit(0);break;
             default:
                 System.out.println("Invalid option");
