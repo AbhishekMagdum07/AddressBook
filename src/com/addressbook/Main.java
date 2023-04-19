@@ -97,6 +97,7 @@ public class Main{
             }
         }
 
+
     }
     public void deleteContact() {
         for(int i = 0; i < contacts.size(); i++) {
@@ -156,8 +157,9 @@ public class Main{
     }
     public void writeCsvFile() { // Uc14- Ability to write contacts in CSV file.
         try {
+            FileOutputStream fos = new FileOutputStream("E:\\AddressBook.csv");
             BufferedWriter writer = new BufferedWriter(new FileWriter("E:\\AddressBook.csv"));
-            writer.write(String.valueOf(contacts));
+            writer.write(contact.getFirstName()+","+contact.getLastName()+", "+contact.getAddress()+", "+contact.getCity()+", "+contact.getState()+", "+contact.getZip()+", "+contact.getEmail()+", "+contact.getPhoneNumber());
             writer.close();
             File file = new File("E:\\AddressBook.csv");
             if (file.exists()) {
