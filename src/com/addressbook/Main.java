@@ -1,8 +1,6 @@
 package com.addressbook;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,14 +50,7 @@ public class Main{
         this.multipleAdd.put(name, contacts);
 //        } else {
     }
-    public void duplicateContacts() {  // using stream for find duplicate contacts.
-        List<AddressBook> duplicate = contacts.stream().filter(a -> a.getFirstName().equals(a.getFirstName())).collect(Collectors.toList());
-        if (contacts.equals(duplicate)) {
-            System.out.println("This contact is already present in addressbook");
-        } else {
-            contacts.add(contact);
-        }
-    }
+
 
     public void editContacts() {
         for(int i = 0; i < contacts.size(); i++) {
@@ -135,9 +126,25 @@ public class Main{
         List<AddressBook> sorting = contacts.stream().sorted(Comparator.comparing(AddressBook::getState)).collect(Collectors.toList());
         System.out.println(sorting);
     }
+
+    public void writeFile() { // Uc13- Ability to write contacts in file.
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("E:\\Employee.txt"));
+            writer.write(String.valueOf(contacts));
+            writer.close();
+            File file = new File("E:\\Employee.txt");
+            if (file.exists()) {
+                System.out.println("File Created Successfully");
+            } else {
+                System.out.println("File is not created.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void readFile(){ // Reading contacts using File handling.
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\windows\\Desktop\\Addressbook.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("E:\\Employee.txt"));
             String line;
             while ((line = reader.readLine()) != null){
                 System.out.println(line);
@@ -146,11 +153,10 @@ public class Main{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
     public void choices() {
         System.out.println("Select from the following = \n1. Add contact 2. Edit contact 3. Delete contact 4. Display contact 5.search" +
-                                " 6.Contact by city  7.sort by name 8.sort by state 9.Read file 10.Exit ");
+                                " 6.Contact by city  7.sort by name 8.sort by state 9.Write File 10.Read file 10.Exit ");
         option = sc.nextInt();
         switch(option) {
             case 1:
@@ -202,10 +208,13 @@ public class Main{
                 choices();
                 break;
             case 9:
+                output.writeFile();
+                choices();
+            case 10:
                output.readFile();
                choices();
 
-            case 10:
+            case 11:
                 System.exit(0);break;
             default:
                 System.out.println("Invalid option");
